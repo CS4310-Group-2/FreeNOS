@@ -26,8 +26,8 @@ Wait::Result Wait::exec()
     int myPID = pid;
     int status;
     printf("%d",myPID);
-    waitpid(myPID,&status,0);
-    
+    pid_t wait_call_status = waitpid(myPID,&status,0);
+    printf("%d",wait_call_status);
 
     // Done
     return Success;
