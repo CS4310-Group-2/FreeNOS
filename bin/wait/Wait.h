@@ -15,7 +15,7 @@
 #define __BIN_WAIT_WAIT_H
 
 #include <POSIXApplication.h>
-
+#include "sys/wait.h"
 /**
  * @addtogroup bin
  * @{
