@@ -10,7 +10,7 @@ Wait::Wait(int argc, char **argv)
     : POSIXApplication(argc, argv)
 {
     parser().setDescription("Cause a process to wait for some time");
-    parser().registerPositional("SECONDS", "Process waits for certain number of seconds");
+    parser().registerPositional("PID", "Process waits for certain Process given by PID");
     
     pid = atoi(argv[1]);
 }
@@ -25,11 +25,16 @@ Wait::Result Wait::exec()
 {
     int myPID = pid;
     int status;
-    printf("%d",myPID);
+    printf("Waiting on PID %d\n",myPID);
     pid_t wait_call_status = waitpid(myPID,&status,0);
-    printf("%d",wait_call_status);
 
+    if(wait_call_status!=myPID){
+        printf("Wait Failed\n");
+        return TimedOut;
+
+    }
     // Done
+    printf("Wait was a success\n");
     return Success;
 }
 
