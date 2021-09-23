@@ -6,6 +6,7 @@
 #include "Wait.h"
 
 int pid;
+
 Wait::Wait(int argc, char **argv)
     : POSIXApplication(argc, argv)
 {
@@ -20,7 +21,7 @@ Wait::~Wait()
 
 }
 
-// Wait arg1 , arg2 , arg3
+
 Wait::Result Wait::exec()
 {
     int myPID = pid;
