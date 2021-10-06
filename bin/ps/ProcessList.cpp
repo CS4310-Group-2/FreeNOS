@@ -26,6 +26,7 @@ ProcessList::ProcessList(int argc, char **argv)
     : POSIXApplication(argc, argv)
 {
     parser().setDescription("Output system process list");
+    parser().registerFlag('l', "long", "list process in long output form");
 }
 
 ProcessList::Result ProcessList::exec()
@@ -34,7 +35,14 @@ ProcessList::Result ProcessList::exec()
     String out;
 
     // Print header
-    out << "ID  PARENT  USER GROUP STATUS     CMD\r\n";
+
+    if(arguments().get("long"))
+        out << "ID  PARENT  PRIORITY USER GROUP STATUS     CMD\r\n";
+
+    else
+        out << "ID  PARENT  USER GROUP STATUS     CMD\r\n";
+
+
 
     // Loop processes
     for (ProcessID pid = 0; pid < ProcessClient::MaximumProcesses; pid++)
