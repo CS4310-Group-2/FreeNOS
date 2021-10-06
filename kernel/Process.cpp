@@ -26,6 +26,7 @@
 Process::Process(ProcessID id, Address entry, bool privileged, const MemoryMap &map)
     : m_id(id), m_map(map), m_shares(id)
 {
+    m_prioritylevel = Default;
     m_state         = Stopped;
     m_parent        = 0;
     m_waitId        = 0;
@@ -55,6 +56,11 @@ Process::~Process()
         m_memoryContext->releaseSection(m_map.range(MemoryMap::UserShare), true);
         delete m_memoryContext;
     }
+}
+
+Process::PriorityLevel Process::getPriorityLevel() 
+{
+    return m_prioritylevel;
 }
 
 ProcessID Process::getID() const

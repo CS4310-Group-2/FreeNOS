@@ -71,6 +71,17 @@ class Process
         Stopped
     };
 
+
+    /**
+     * The assigned priority level of the Process
+     */
+    enum PriorityLevel
+    {
+      Min = 1,
+      Default = 3,
+      Max = 5
+    };
+
   public:
 
     /**
@@ -80,6 +91,7 @@ class Process
      * @param entry Initial program counter value.
      * @param privileged If true, the process has unlimited access to hardware.
      * @param map Memory map to use
+     * @param prioritylevel The priority level that the process was assigned
      */
     Process(ProcessID id, Address entry, bool privileged, const MemoryMap &map);
 
@@ -87,6 +99,13 @@ class Process
      * Destructor function.
      */
     virtual ~Process();
+
+    /**
+     * Retrieve our priority level.
+     *
+     * @return Priority level number.
+     */
+    PriorityLevel getPriorityLevel();
 
     /**
      * Retrieve our ID number.
@@ -242,6 +261,8 @@ class Process
     void setParent(ProcessID id);
 
   protected:
+
+    PriorityLevel m_prioritylevel;
 
     /** Process Identifier */
     const ProcessID m_id;
