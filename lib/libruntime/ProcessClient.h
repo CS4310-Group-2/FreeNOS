@@ -22,7 +22,7 @@
 #include <FreeNOS/ProcessManager.h>
 #include <Types.h>
 #include <String.h>
-
+#include <Process.h>
 /**
  * @addtogroup lib
  * @{
@@ -60,14 +60,22 @@ class ProcessClient
     {
         /** Process state retrieved from the kernel */
         ProcessInfo kernelState;
-
+        
         /** Full command including program path */
         String command;
 
         /** Textual state of the process */
         String textState;
+
+        /** Adding the priority level of the process**/
+        String PriorityLevel; 
+
     }
     Info;
+
+
+
+    
 
   public:
 
@@ -128,6 +136,10 @@ class ProcessClient
 
     /** Our parent process identifier */
     static const ProcessID m_parent;
+
+    /** Priority Level of the process**/
+    static const  int m_prioritylevel;
+
 };
 
 /**
