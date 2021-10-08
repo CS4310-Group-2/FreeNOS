@@ -68,7 +68,7 @@ class ProcessClient
         String textState;
 
         /** Adding the priority level of the process**/
-        String PriorityLevel; 
+        int PriorityLevel; 
 
     }
     Info;
