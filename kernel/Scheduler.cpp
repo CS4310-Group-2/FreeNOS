@@ -66,12 +66,21 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
     return InvalidArgument;
 }
 
+/*
+    Void Scheduler::Organize
+    Take the queue items
+    Organize the processes by PriorityLevel 
+    Process.getPriorityLevel,
+    Sort with info
+*/
+
 Process * Scheduler::select()
 {
     if (m_queue.count() > 0)
     {
         Process *p = m_queue.pop();
         m_queue.push(p);
+
 
         return p;
     }
