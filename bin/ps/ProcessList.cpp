@@ -48,12 +48,26 @@ ProcessList::Result ProcessList::exec()
     for (ProcessID pid = 0; pid < ProcessClient::MaximumProcesses; pid++)
     {
         ProcessClient::Info info;
+        
 
         const ProcessClient::Result result = process.processInfo(pid, info);
         if (result == ProcessClient::Success)
         {
             DEBUG("PID " << pid << " state = " << *info.textState);
 
+            if(arguments().get("long"))
+            {
+                
+                // Output a line
+                char line[128];
+                snprintf(line, sizeof(line),
+                        "%3d %7d %8s %4d %5d %10s %32s\r\n",
+                        pid, info.kernelState.parent,"Priority",
+                        0, 0, *info.textState, *info.command);
+                out << line;
+            }
+
+            else{
             // Output a line
             char line[128];
             snprintf(line, sizeof(line),
@@ -61,7 +75,10 @@ ProcessList::Result ProcessList::exec()
                      pid, info.kernelState.parent,
                      0, 0, *info.textState, *info.command);
             out << line;
+            }
         }
+
+        
     }
 
     // Output the table
