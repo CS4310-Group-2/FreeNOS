@@ -8,8 +8,11 @@
 Renice::Renice(int argc, char **argv)
       : POSIXApplication(argc,argv)
 {
-      parser().setDescription("Changes the priority level of a ");
-
+      parser().setDescription("Changes the priority level of a Process");
+      parser().registerPositional("PRIORITY","The priority that the process will change to.");
+      parser().registerPositional("PID","Changes the priority level of a given.");
+      parser().registerFlag('n',"new_priority_level","The new priority level of the process");
+      parser().registerFlag('l',"list_of_priorities","Displays the list of available priorites to change to.");
 }
 
 Renice::~Renice()
@@ -19,6 +22,18 @@ Renice::~Renice()
 
 Renice::Result Renice::exec()
 {
-    printf("running renice");
+
+    printf("running renice\n");
+    int PID = atoi(arguments().get("PID"));
+    int PRIORITY = atoi(arguments().get("PRIORITY"));
+
+    if(PRIORITY<1||PRIORITY>5)
+    {
+          ERROR("invalid Priority `" << arguments().get("PRIORITY") << "'");
+          return InvalidArgument;
+    }
+    printf("The new Priority of %d is %d\n",PID,PRIORITY);
+
+    
     return Success;
 }
