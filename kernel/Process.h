@@ -78,7 +78,9 @@ class Process
     enum PriorityLevel
     {
       Min = 1,
+      Lower = 2,
       Default = 3,
+      Higher = 4,
       Max = 5
     };
 
