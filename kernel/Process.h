@@ -110,6 +110,13 @@ class Process
     PriorityLevel getPriorityLevel();
 
     /**
+     * set our priority level.
+     *
+     * @return void.
+     */
+    void setPriorityLevel(int new_priority_level);
+
+    /**
      * Retrieve our ID number.
      *
      * @return Process Identification number.
