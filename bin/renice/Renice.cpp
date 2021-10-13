@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include "Renice.h"
+#include <ProcessClient.h>
 
 Renice::Renice(int argc, char **argv)
       : POSIXApplication(argc,argv)
@@ -22,10 +23,11 @@ Renice::~Renice()
 
 Renice::Result Renice::exec()
 {
+    const ProcessClient process;
 
     printf("running renice\n");
     int PID = atoi(arguments().get("PID"));
-    int PRIORITY = atoi(arguments().get("PRIORITY"));
+    const int PRIORITY = atoi(arguments().get("PRIORITY"));
 
     if(PRIORITY<1||PRIORITY>5)
     {
@@ -33,7 +35,8 @@ Renice::Result Renice::exec()
           return InvalidArgument;
     }
     printf("The new Priority of %d is %d\n",PID,PRIORITY);
-
+   
+    process.RenicePID(PID,PRIORITY);
     
     return Success;
 }

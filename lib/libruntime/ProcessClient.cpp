@@ -15,16 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include <FreeNOS/System.h>
 #include <Types.h>
 #include <Macros.h>
 #include "ProcessClient.h"
 
+
 const ProcessID ProcessClient::m_pid = ProcessCtl(SELF, GetPID, 0);
 
 const ProcessID ProcessClient::m_parent = ProcessCtl(SELF, GetParent, 0);
-
-const int ProcessClient::m_prioritylevel = ProcessCtl(SELF, GetPriority, 0);
 
 ProcessID ProcessClient::getProcessID() const
 {
@@ -68,11 +68,17 @@ ProcessClient::Result ProcessClient::processInfo(const ProcessID pid,
     }
 
     // Fill output
-    info.PriorityLevel = m_prioritylevel;
+    
     info.command = cmd;
     info.textState = (pid == m_pid ? "Running" : textStates[info.kernelState.state]);
 #endif /* __HOST__ */
 
+    return Success;
+}
+ProcessClient::Result ProcessClient::RenicePID(int U_PID, const int new_priority_level) const
+{
+    ProcessID pid = U_PID;
+    ProcessCtl(pid,SetPriority,(Address)&new_priority_level); 
     return Success;
 }
 
@@ -107,3 +113,7 @@ ProcessID ProcessClient::findProcess(const String program) const
         return ANY;
     }
 }
+
+
+
+

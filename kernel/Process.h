@@ -75,8 +75,9 @@ class Process
     /**
      * The assigned priority level of the Process
      */
-    enum PriorityLevel
+    enum PriorityLevels
     {
+      Invalid = 0,
       Min = 1,
       Lower = 2,
       Default = 3,
@@ -114,7 +115,7 @@ class Process
      *
      * @return void.
      */
-    void setPriorityLevel(int new_priority_level);
+    void setPriorityLevel(u8 new_priority_level);
 
     /**
      * Retrieve our ID number.

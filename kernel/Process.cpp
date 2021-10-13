@@ -58,42 +58,15 @@ Process::~Process()
     }
 }
 
-Process::PriorityLevel Process::getPriorityLevel() 
+PriorityLevel Process::getPriorityLevel() 
 {
     return m_prioritylevel;
 }
 
-void Process::setPriorityLevel(int new_priority_level)
+void Process::setPriorityLevel(u8 new_priority_level)
 {
-    switch (new_priority_level)
-    {
-    case /* constant-expression */1: 
-        /* code */
-        m_prioritylevel = Min;
-        break;
-    case 2:
-        m_prioritylevel = Lower;
-        break;    
-
-    case 3:
-        m_prioritylevel = Default;
-        break;
-
-    case 4:
-        m_prioritylevel = Higher;
-        break;
-    
-    case 5:
-        m_prioritylevel = Max;
-        break;
-
-    default:
-        break;
-
-    }
-
-    
-
+    m_prioritylevel = new_priority_level;
+    return;
 }
 
 

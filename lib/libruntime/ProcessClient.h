@@ -78,6 +78,13 @@ class ProcessClient
     
 
   public:
+  /**
+     * Set current process priority
+     *
+     * @return Result Code
+     */
+
+    Result RenicePID(int U_PID, const int new_priority_level) const;
 
     /**
      * Get current process identifier
