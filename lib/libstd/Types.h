@@ -130,6 +130,9 @@ typedef unsigned int Size;
 /** A memory address. */
 typedef unsigned long Address;
 
+/** A Priority level. */
+typedef u8 PriorityLevel;
+
 /** User Identity. */
 typedef unsigned short UserID;
 
