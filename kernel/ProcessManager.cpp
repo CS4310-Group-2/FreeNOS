@@ -154,10 +154,13 @@ void ProcessManager::remove(Process *proc, const uint exitStatus)
 
 ProcessManager::Result ProcessManager::schedule()
 {
+    // Timer for the round robin rotation
     const Timer *timer = Kernel::instance()->getTimer();
+    // The amount of sleeping proccesses
     const Size sleepTimerCount = m_sleepTimerQueue.count();
 
     // Let the scheduler select a new process
+    // Grabs it from the head
     Process *proc = m_scheduler->select();
 
     // If no process ready, let us idle
@@ -172,9 +175,11 @@ ProcessManager::Result ProcessManager::schedule()
     // Try to wakeup processes that are waiting for a timer to expire
     for (Size i = 0; i < sleepTimerCount; i++)
     {
+        // Grabbing the next process that was sleeping
         Process *p = m_sleepTimerQueue.pop();
         const Timer::Info & procTimer = p->getSleepTimer();
 
+        // If time q is up then wake it up.
         if (timer->isExpired(procTimer))
         {
             const Result result = wakeup(p);
@@ -183,6 +188,7 @@ ProcessManager::Result ProcessManager::schedule()
                 FATAL("failed to wakeup PID " << p->getID());
             }
         }
+        //if it's still not ready push it back into the queue
         else
         {
             m_sleepTimerQueue.push(p);
