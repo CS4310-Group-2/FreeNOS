@@ -151,7 +151,13 @@ void ProcessManager::remove(Process *proc, const uint exitStatus)
     // Free the process memory
     delete proc;
 }
-
+/**
+ * If we want to change how the scheduler works we 
+ * need to properly see how the processes are enqueuing and dequeuing
+ * read my comments in enqueueProcess and dequeueProcess.
+ * 
+ * For simple linear queue we need a way to tell the queue where to put the processes.
+*/
 ProcessManager::Result ProcessManager::schedule()
 {
     // Timer for the round robin rotation
@@ -402,6 +408,13 @@ ProcessManager::Result ProcessManager::interruptNotify(const u32 vector)
     return Success;
 }
 
+/**
+ * EnqueueProcess is found in 
+ * remove
+ * resume
+ * wakeup
+ * raiseEvent
+*/
 ProcessManager::Result ProcessManager::enqueueProcess(Process *proc, const bool ignoreState)
 {
     if (m_scheduler->enqueue(proc, ignoreState) != Scheduler::Success)
@@ -417,6 +430,15 @@ ProcessManager::Result ProcessManager::enqueueProcess(Process *proc, const bool 
     return Success;
 }
 
+
+/**
+ * EnqueueProcess is found in 
+ * remove
+ * setIdle
+ * wait
+ * stop
+ * sleep
+*/
 ProcessManager::Result ProcessManager::dequeueProcess(Process *proc, const bool ignoreState) const
 {
     if (m_scheduler->dequeue(proc, ignoreState) != Scheduler::Success)
