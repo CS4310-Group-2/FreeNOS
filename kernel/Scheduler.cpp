@@ -15,10 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include <Log.h>
 #include "Kernel.h"
 #include "Scheduler.h"
 #include "Process.h"
+
+
 Scheduler::Scheduler()
 {
     DEBUG("");
@@ -38,6 +41,7 @@ Size Scheduler::count() const
 */
 Scheduler::Result Scheduler::enqueue(Process *proc, bool ignoreState)
 {
+    //ERROR("Is it executing here?");
     if (proc->getState() != Process::Ready && !ignoreState)
     {
         ERROR("process ID " << proc->getID() << " not in Ready state");
@@ -45,28 +49,34 @@ Scheduler::Result Scheduler::enqueue(Process *proc, bool ignoreState)
     }
 
     //m_queue.push(proc);
-    int priorityLvl = proc->getPriorityLevel();
+    PriorityLevel priorityLvl = proc->getPriorityLevel();
     switch (priorityLvl)
     {
-    case 0:
-        m_queue.push(proc);
-        break;
-    case 1:
+
+    case Process::Min:
+
         min_queue.push(proc);
         break;
-    case 2:
+    case Process::Lower:
+
         lower_queue.push(proc);
         break;
-    case 3:
+    case Process::Default:
+
         default_queue.push(proc);
         break;
-    case 4:
+    case Process::Higher:
+
         higher_queue.push(proc);
         break;
-    case 5:
+
+    case Process::Max:
+
         max_queue.push(proc);
         break;
+
     default:
+
         break;
     }
 
@@ -81,33 +91,88 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         ERROR("process ID " << proc->getID() << " is in Ready state");
         return InvalidArgument;
     }
+    
 
-    Size count = m_queue.count();
+    Size min_count = min_queue.count();
+    Size lower_count = lower_queue.count();
+    Size def_count = default_queue.count();
+    Size high_count = higher_queue.count();
+    Size max_count = max_queue.count();
 
-    int priorityLvl = proc->getPriorityLevel();
-        switch (priorityLvl)
+    
+
+        // Traverse the Queue to remove the Process
+    for (Size i = 0; i < min_count; i++)
+    {
+        Process *p = min_queue.pop();
+        if (p == proc)
         {
-        case 0:
-            m_queue.push(proc);
-            break;
-        case 1:
-            min_queue.push(proc);
-            break;
-        case 2:
-            lower_queue.push(proc);
-            break;
-        case 3:
-            default_queue.push(proc);
-            break;
-        case 4:
-            higher_queue.push(proc);
-            break;
-        case 5:
-            max_queue.push(proc);
-            break;
-        default:
-            break;
+            return Success;
         }
+
+        else
+            min_queue.push(p);
+    }
+
+            // Traverse the Queue to remove the Process
+    for (Size i = 0; i < lower_count; i++)
+    {
+        Process *p = lower_queue.pop();
+        if (p == proc)
+        {
+            return Success;
+        }
+
+        else
+            lower_queue.push(p);
+    }
+
+            // Traverse the Queue to remove the Process
+    for (Size i = 0; i < def_count; i++)
+    {
+        //ERROR("Trying to dequeue default")
+        Process *p = default_queue.pop();
+        if (p == proc)
+        {
+            return Success;
+        }
+
+        else
+            default_queue.push(p);
+    }
+
+            // Traverse the Queue to remove the Process
+    for (Size i = 0; i < high_count; i++)
+    {
+        Process *p = higher_queue.pop();
+        if (p == proc)
+        {
+            return Success;
+        }
+
+        else
+            higher_queue.push(p);
+    }
+
+            // Traverse the Queue to remove the Process
+    for (Size i = 0; i < max_count; i++)
+    {
+        Process *p = max_queue.pop();
+        if (p == proc)
+        {
+            return Success;
+        }
+
+        else
+            max_queue.push(p);
+    }
+        /*
+
+        if (p == proc)
+                return Success;
+            else
+                m_queue.push(p);
+        }*/
     
     /**
      * dequeing based on Priority Level
@@ -116,17 +181,9 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
      * instead of if else
      * 
      * 
-            // Traverse the Queue to remove the Process
-            for (Size i = 0; i < count; i++)
-            {
-                Process *p = m_queue.pop();
-
-                if (p == proc)
-                    return Success;
-                else
-                    m_queue.push(p);
-            }
+            
     */
+    
 
     FATAL("process ID " << proc->getID() << " is not in the schedule");
     return InvalidArgument;

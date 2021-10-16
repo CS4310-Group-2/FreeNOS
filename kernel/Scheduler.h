@@ -23,6 +23,7 @@
 #include <Macros.h>
 #include <Queue.h>
 #include "Process.h"
+#include <Types.h>
 #include "ProcessManager.h"
 
 /**
