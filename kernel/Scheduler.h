@@ -91,6 +91,15 @@ class Scheduler
 
     /** Contains processes ready to run */
     Queue<Process *, MAX_PROCS> m_queue;
+    Queue<Process *, MAX_PROCS> min_queue;
+    Queue<Process *, MAX_PROCS> lower_queue;
+    Queue<Process *, MAX_PROCS> default_queue;
+    Queue<Process *, MAX_PROCS> higher_queue;
+    Queue<Process *, MAX_PROCS> max_queue;
+
+    
+
+
 };
 
 /**

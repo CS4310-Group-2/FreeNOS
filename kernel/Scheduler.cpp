@@ -18,7 +18,7 @@
 #include <Log.h>
 #include "Kernel.h"
 #include "Scheduler.h"
-
+#include "Process.h"
 Scheduler::Scheduler()
 {
     DEBUG("");
@@ -31,6 +31,8 @@ Size Scheduler::count() const
 
 Scheduler::Result Scheduler::enqueue(Process *proc, bool ignoreState)
 {
+   
+
     if (proc->getState() != Process::Ready && !ignoreState)
     {
         ERROR("process ID " << proc->getID() << " not in Ready state");
@@ -38,7 +40,15 @@ Scheduler::Result Scheduler::enqueue(Process *proc, bool ignoreState)
     }
 
     m_queue.push(proc);
+    /**
+     * Enqueing based on Priority Level
+     * 
+     * Use a switch case to determine the priority level
+     * instead of if else
+    */
+
     return Success;
+    
 }
 
 Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
@@ -61,6 +71,13 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         else
             m_queue.push(p);
     }
+    
+    /**
+     * dequeing based on Priority Level
+     * 
+     * Use a switch case to determine the priority level
+     * instead of if else
+    */
 
     FATAL("process ID " << proc->getID() << " is not in the schedule");
     return InvalidArgument;
@@ -84,6 +101,16 @@ Process * Scheduler::select()
 
         return p;
     }
+    /**
+     * if (max_queue > 0)
+     *     return head of max queue
+     * if (higher > 0)
+     *     return head of max queue
+     * ....
+     * if (min >0)
+     *     return head of min queue
+     * 
+    */
 
     return (Process *) NULL;
 }
