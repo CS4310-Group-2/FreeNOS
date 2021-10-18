@@ -55,5 +55,6 @@ SlowCalc::Result SlowCalc::exec()
     }
 
     // Done
+    printf("Done running sc with %d\n",n);
     return Success;
 }
