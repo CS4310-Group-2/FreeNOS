@@ -100,7 +100,8 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         else
             min_queue.push(p);
     }
-            // Traverse the lower queue to remove the Process
+
+    // Traverse the lower queue to remove the Process
     for (Size i = 0; i < lower_count; i++)
     {
         Process *p = lower_queue.pop();
@@ -111,7 +112,8 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         else
             lower_queue.push(p);
     }
-            // Traverse the default queue to remove the Process
+
+    // Traverse the default queue to remove the Process
     for (Size i = 0; i < def_count; i++)
     {
         Process *p = default_queue.pop();
@@ -122,7 +124,9 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         else
             default_queue.push(p);
     }
-            // Traverse the higher queue to remove the Process
+
+
+    // Traverse the higher queue to remove the Process
     for (Size i = 0; i < high_count; i++)
     {
         Process *p = higher_queue.pop();
@@ -133,7 +137,8 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         else
             higher_queue.push(p);
     }
-            // Traverse the max queue to remove the Process
+
+    // Traverse the max queue to remove the Process
     for (Size i = 0; i < max_count; i++)
     {
         Process *p = max_queue.pop();
@@ -149,13 +154,7 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
     return InvalidArgument;
 }
 
-/*
-    Void Scheduler::Organize
-    Take the queue items
-    Organize the processes by PriorityLevel
-    Process.getPriorityLevel,
-    Sort with info
-*/
+
 Process * Scheduler::select()
 {
     Process *p;
@@ -188,24 +187,4 @@ Process * Scheduler::select()
 
     return (Process *) NULL;
 }
-    /**
-     * if (max_queue > 0)
-     *     return head of max queue
-     * if (higher > 0)
-     *     return head of max queue
-     * ....
-     * if (min >0)
-     *     return head of min queue
-     *
-    *     else(m_queue.count()>0){
-        Process *p = m_queue.pop();
-        m_queue.push(p);
-        return p;
-    }
-    */
-
-    //Test function to show the count of each queue.
-    // void Scheduler::show()
-    // {
-    //       ERROR("min" << min_queue.count() << "  low" << lower_queue.count() << "  def" << default_queue.count() << "  hi" << higher_queue.count() << "  max" << max_queue.count());
-    // }
+    
