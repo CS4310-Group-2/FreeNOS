@@ -25,7 +25,7 @@ Renice::Result Renice::exec()
 {
     const ProcessClient process;
 
-    printf("running renice\n");
+    // printf("running renice\n");
     int PID = atoi(arguments().get("PID"));
     const int PRIORITY = atoi(arguments().get("PRIORITY"));
 
@@ -34,9 +34,7 @@ Renice::Result Renice::exec()
           ERROR("invalid Priority `" << arguments().get("PRIORITY") << "'");
           return InvalidArgument;
     }
-    printf("The new Priority of %d is %d\n",PID,PRIORITY);
-   
     process.RenicePID(PID,PRIORITY);
-    
+    printf("The new Priority of process %d is %d\n",PID,PRIORITY);
     return Success;
 }

@@ -66,15 +66,17 @@ API::Result ProcessCtlHandler(const ProcessID procID,
 
     case GetPID:
         return (API::Result) procs->current()->getID();
- 
 
     case GetParent:
         return (API::Result) procs->current()->getParent();
-        
-   
-    
+
     case SetPriority:
         proc->setPriorityLevel (*((PriorityLevel*)addr) );
+        if (procs->requeueProcess(proc) != ProcessManager::Success)
+        {
+            ERROR("failed to requeue " << proc->getID());
+            return API::IOError;
+        }
         break;
 
     case Schedule:

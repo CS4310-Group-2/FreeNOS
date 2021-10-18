@@ -209,6 +209,16 @@ class ProcessManager
      */
     Process * current();
 
+    /**
+     * Calls dequeueProcess, then enqueueProcess in order to move the process to
+     * the proper priority queue.
+     *
+     * @param proc Process pointer
+     *
+     * @return Result code
+     */
+    Result requeueProcess(Process *proc);
+
   private:
 
     /**

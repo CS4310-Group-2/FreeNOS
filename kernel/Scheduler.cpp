@@ -27,7 +27,7 @@ Scheduler::Scheduler()
     DEBUG("");
 }
 
-Size Scheduler::count() const
+ Size Scheduler::count() const
 {
     return m_queue.count();
 }
@@ -35,53 +35,45 @@ Size Scheduler::count() const
 
 /**
  * Enqueing based on Priority Level
- * 
+ *
  * Use a switch case to determine the priority level
  * instead of if else
 */
 Scheduler::Result Scheduler::enqueue(Process *proc, bool ignoreState)
 {
-    //ERROR("Is it executing here?");
     if (proc->getState() != Process::Ready && !ignoreState)
     {
         ERROR("process ID " << proc->getID() << " not in Ready state");
         return InvalidArgument;
     }
 
-    //m_queue.push(proc);
     PriorityLevel priorityLvl = proc->getPriorityLevel();
     switch (priorityLvl)
     {
-
     case Process::Min:
-
         min_queue.push(proc);
         break;
-    case Process::Lower:
 
+    case Process::Lower:
         lower_queue.push(proc);
         break;
-    case Process::Default:
 
+    case Process::Default:
         default_queue.push(proc);
         break;
-    case Process::Higher:
 
+    case Process::Higher:
         higher_queue.push(proc);
         break;
 
     case Process::Max:
-
         max_queue.push(proc);
         break;
 
     default:
-
         break;
     }
-
     return Success;
-    
 }
 
 Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
@@ -91,17 +83,13 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         ERROR("process ID " << proc->getID() << " is in Ready state");
         return InvalidArgument;
     }
-    
-
     Size min_count = min_queue.count();
     Size lower_count = lower_queue.count();
     Size def_count = default_queue.count();
     Size high_count = higher_queue.count();
     Size max_count = max_queue.count();
 
-    
-
-        // Traverse the Queue to remove the Process
+        // Traverse the min queue to remove the Process
     for (Size i = 0; i < min_count; i++)
     {
         Process *p = min_queue.pop();
@@ -109,12 +97,10 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         {
             return Success;
         }
-
         else
             min_queue.push(p);
     }
-
-            // Traverse the Queue to remove the Process
+            // Traverse the lower queue to remove the Process
     for (Size i = 0; i < lower_count; i++)
     {
         Process *p = lower_queue.pop();
@@ -122,26 +108,21 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         {
             return Success;
         }
-
         else
             lower_queue.push(p);
     }
-
-            // Traverse the Queue to remove the Process
+            // Traverse the default queue to remove the Process
     for (Size i = 0; i < def_count; i++)
     {
-        //ERROR("Trying to dequeue default")
         Process *p = default_queue.pop();
         if (p == proc)
         {
             return Success;
         }
-
         else
             default_queue.push(p);
     }
-
-            // Traverse the Queue to remove the Process
+            // Traverse the higher queue to remove the Process
     for (Size i = 0; i < high_count; i++)
     {
         Process *p = higher_queue.pop();
@@ -149,12 +130,10 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         {
             return Success;
         }
-
         else
             higher_queue.push(p);
     }
-
-            // Traverse the Queue to remove the Process
+            // Traverse the max queue to remove the Process
     for (Size i = 0; i < max_count; i++)
     {
         Process *p = max_queue.pop();
@@ -162,28 +141,9 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
         {
             return Success;
         }
-
         else
             max_queue.push(p);
     }
-        /*
-
-        if (p == proc)
-                return Success;
-            else
-                m_queue.push(p);
-        }*/
-    
-    /**
-     * dequeing based on Priority Level
-     * 
-     * Use a switch case to determine the priority level
-     * instead of if else
-     * 
-     * 
-            
-    */
-    
 
     FATAL("process ID " << proc->getID() << " is not in the schedule");
     return InvalidArgument;
@@ -192,37 +152,37 @@ Scheduler::Result Scheduler::dequeue(Process *proc, bool ignoreState)
 /*
     Void Scheduler::Organize
     Take the queue items
-    Organize the processes by PriorityLevel 
+    Organize the processes by PriorityLevel
     Process.getPriorityLevel,
     Sort with info
 */
-
 Process * Scheduler::select()
 {
+    Process *p;
     if(max_queue.count()>0){
-        Process *p = max_queue.pop();
+        p = max_queue.pop();
         max_queue.push(p);
         return p;
     }
     else if(higher_queue.count()>0){
-        Process *p = higher_queue.pop();
+        p = higher_queue.pop();
         higher_queue.push(p);
-        return p;       
+        return p;
     }
     else if(default_queue.count()>0){
-        Process *p = default_queue.pop();
+        p = default_queue.pop();
         default_queue.push(p);
-        return p;       
+        return p;
     }
     else if(lower_queue.count()>0){
-        Process *p = lower_queue.pop();
+        p = lower_queue.pop();
         lower_queue.push(p);
-        return p;       
+        return p;
     }
     else if(min_queue.count()>0){
-        Process *p = min_queue.pop();
+        p = min_queue.pop();
         min_queue.push(p);
-        return p;        
+        return p;
     }
 
 
@@ -236,10 +196,16 @@ Process * Scheduler::select()
      * ....
      * if (min >0)
      *     return head of min queue
-     * 
+     *
     *     else(m_queue.count()>0){
         Process *p = m_queue.pop();
         m_queue.push(p);
         return p;
     }
     */
+
+    //Test function to show the count of each queue.
+    // void Scheduler::show()
+    // {
+    //       ERROR("min" << min_queue.count() << "  low" << lower_queue.count() << "  def" << default_queue.count() << "  hi" << higher_queue.count() << "  max" << max_queue.count());
+    // }

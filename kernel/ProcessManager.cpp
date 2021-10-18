@@ -152,10 +152,10 @@ void ProcessManager::remove(Process *proc, const uint exitStatus)
     delete proc;
 }
 /**
- * If we want to change how the scheduler works we 
+ * If we want to change how the scheduler works we
  * need to properly see how the processes are enqueuing and dequeuing
  * read my comments in enqueueProcess and dequeueProcess.
- * 
+ *
  * For simple linear queue we need a way to tell the queue where to put the processes.
 */
 ProcessManager::Result ProcessManager::schedule()
@@ -408,8 +408,23 @@ ProcessManager::Result ProcessManager::interruptNotify(const u32 vector)
     return Success;
 }
 
+//Dequeues, then enqueues the given process to move it to the proper priority level.
+ProcessManager::Result ProcessManager::requeueProcess(Process *proc)
+{
+      const Result rd = dequeueProcess(proc, true);
+      if (rd != Success)
+      {
+          FATAL("failed to dequeue PID " << proc->getID());
+      }
+      const Result re = enqueueProcess(proc, true);
+      if (re != Success)
+      {
+          FATAL("failed to enqueue PID " << proc->getID());
+      }
+  return Success;
+}
 /**
- * EnqueueProcess is found in 
+ * EnqueueProcess is found in
  * remove
  * resume
  * wakeup
@@ -432,7 +447,7 @@ ProcessManager::Result ProcessManager::enqueueProcess(Process *proc, const bool 
 
 
 /**
- * EnqueueProcess is found in 
+ * EnqueueProcess is found in
  * remove
  * setIdle
  * wait

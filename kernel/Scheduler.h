@@ -59,7 +59,7 @@ class Scheduler
      *
      * @return Number of processes on the schedule
      */
-    Size count() const;
+   Size count() const;
 
     /**
      * Add a Process to the run schedule.
@@ -87,9 +87,9 @@ class Scheduler
      * @return Process pointer or NULL if no matching process found
      */
     Process * select();
+    // void show();
 
   private:
-
     /** Contains processes ready to run */
     Queue<Process *, MAX_PROCS> m_queue;
     Queue<Process *, MAX_PROCS> min_queue;
@@ -97,10 +97,6 @@ class Scheduler
     Queue<Process *, MAX_PROCS> default_queue;
     Queue<Process *, MAX_PROCS> higher_queue;
     Queue<Process *, MAX_PROCS> max_queue;
-
-    
-
-
 };
 
 /**
