@@ -4,7 +4,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include "Kill.h"
-
+#include "signal.h"
 
 Kill::Kill(int argc, char **argv): POSIXApplication(argc,argv)
 {
@@ -21,6 +21,11 @@ Kill::~Kill()
 
 Kill::Result Kill::exec()
 {
+    int pid = atoi(arguments().get("PID"));
+    int result = kill(pid,SIGKILL);
     printf("The process killed was %d\n",atoi(arguments().get("PID")));
+
+
+
 
 }
