@@ -23,9 +23,15 @@ Kill::Result Kill::exec()
 {
     int pid = atoi(arguments().get("PID"));
     int result = kill(pid,SIGKILL);
-    printf("The process killed was %d\n",atoi(arguments().get("PID")));
+
+    if(result != 0)
+    {
+        printf("The kill had failed\nThe result given from kill.cpp was %d\n",result);
+        return NotFound;
+    }
 
 
-
+    printf("Process %d was killed\n",pid);
+    return Success;
 
 }
